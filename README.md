@@ -57,6 +57,8 @@ Be sure to read **all** of this document carefully, and follow the guidelines wi
 
 Here's a quick mock-up of how it could look like (simple like Material Design!):
 
+![QR Generator Mockup](./QR-generator_mockUp.png)
+
 ### API
 
 (in Open API 3.0 format)

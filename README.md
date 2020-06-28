@@ -1,3 +1,9 @@
+# Notes for Current Fork: 
+
+
+For details regarding current fork: https://github.com/gene-sbay/mobile-dev-coding-test/, 
+please visit [README_DevNotes.md](https://github.com/gene-sbay/mobile-dev-coding-test/blob/develop/README_DevNotes.md) .
+ 
 # ReadMe 
 
 Make sure you read **all** of this document carefully, and follow the guidelines in it.

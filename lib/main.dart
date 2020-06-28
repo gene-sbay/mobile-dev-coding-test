@@ -1,9 +1,7 @@
-import 'package:http/http.dart' as http;
-
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:qr_mobile_vision/qr_camera.dart';
 import 'package:qr_flutter/qr_flutter.dart';
-
 
 void main() => runApp(QrCodeApp());
 
@@ -26,7 +24,6 @@ class QrCodeHomePage extends StatefulWidget {
 }
 
 class _QrCodeHomePageState extends State<QrCodeHomePage> {
-
   String _qrInfo = 'Scan a Code';
   bool _camState = false;
 
@@ -46,7 +43,6 @@ class _QrCodeHomePageState extends State<QrCodeHomePage> {
   }
 
   Future<String> callServer1() async {
-
     // String localhost = "69.181.92.143";
     String localhost = "10.0.2.2";
 
@@ -65,7 +61,6 @@ class _QrCodeHomePageState extends State<QrCodeHomePage> {
 
   @override
   Widget build(BuildContext context) {
-
     callServer1();
 
     return Scaffold(
@@ -73,25 +68,7 @@ class _QrCodeHomePageState extends State<QrCodeHomePage> {
         title: Text('Flutter QR Reader'),
       ),
       // body: Text(_qrInfo),
-      body: _camState
-          ? Center(
-        child: SizedBox(
-          width: 256,
-          height: 512,
-          child: QrCamera(
-            onError: (context, error) => Text(
-              error.toString(),
-              style: TextStyle(color: Colors.red),
-            ),
-            qrCodeCallback: (code) {
-              _qrCallback(code);
-            },
-          ),
-        ),
-      )
-          : Center(
-        child: Text(_qrInfo),
-      ),
+      body: _getMainLayout(),
       floatingActionButton: Visibility(
         visible: !_camState,
         child: FloatingActionButton(
@@ -100,6 +77,37 @@ class _QrCodeHomePageState extends State<QrCodeHomePage> {
           child: Icon(Icons.scanner),
         ),
       ),
+    );
+  }
+
+  Widget _getMainLayout() {
+    Widget cameraWidget = _camState
+        ? Center(
+            child: SizedBox(
+              width: 512,
+              height: 256,
+              child: QrCamera(
+                onError: (context, error) => Text(
+                  error.toString(),
+                  style: TextStyle(color: Colors.red),
+                ),
+                qrCodeCallback: (code) {
+                  _qrCallback(code);
+                },
+              ),
+            ),
+          )
+        : Center(child: Text(_qrInfo));
+
+    return Column(
+      children: [
+        QrImage(
+          data: "1234567890",
+          version: QrVersions.auto,
+          size: 200.0,
+        ),
+        cameraWidget
+      ]
     );
   }
 }

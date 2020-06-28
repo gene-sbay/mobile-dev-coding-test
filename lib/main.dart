@@ -1,11 +1,13 @@
-import 'package:flutter/material.dart';
-import 'package:qr_mobile_vision/qr_camera.dart';
 import 'package:http/http.dart' as http;
 
+import 'package:flutter/material.dart';
+import 'package:qr_mobile_vision/qr_camera.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
-void main() => runApp(MyApp());
 
-class MyApp extends StatelessWidget {
+void main() => runApp(QrCodeApp());
+
+class QrCodeApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -13,17 +15,17 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.amber,
       ),
-      home: MyHomePage(),
+      home: QrCodeHomePage(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
+class QrCodeHomePage extends StatefulWidget {
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _QrCodeHomePageState createState() => _QrCodeHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _QrCodeHomePageState extends State<QrCodeHomePage> {
 
   String _qrInfo = 'Scan a Code';
   bool _camState = false;

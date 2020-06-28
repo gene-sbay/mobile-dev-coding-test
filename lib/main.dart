@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:qr_mobile_vision/qr_camera.dart';
+import 'package:http/http.dart' as http;
+
 
 void main() => runApp(MyApp());
 
@@ -41,11 +43,32 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  Future<String> callServer1() async {
+
+    // String localhost = "69.181.92.143";
+    String localhost = "10.0.2.2";
+
+    final response = await http.get('http://$localhost:8000/ping');
+
+    if (response.statusCode == 200) {
+      // If the server did return a 200 OK response,
+      // then parse the JSON.
+      print('response.body: ${response.body}');
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to load end point');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+
+    callServer1();
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('Flutter QR Reader Tutorial'),
+        title: Text('Flutter QR Reader'),
       ),
       // body: Text(_qrInfo),
       body: _camState

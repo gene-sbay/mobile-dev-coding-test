@@ -3,8 +3,6 @@ import 'package:logger/logger.dart';
 import 'package:qr_code_demo/app/logger.dart';
 import 'package:qr_mobile_vision/qr_camera.dart';
 
-void main() => runApp(QrScannerScreen());
-
 class QrScannerScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -42,21 +40,20 @@ class _QrScannerState extends State<QrScannerStatefulWidget> {
     });
   }
 
+  _clearScannedData() {
+    _qrCodeData = null;
+  }
+
+
   @override
   Widget build(BuildContext context) {
-    
-    _mainColumnWidgets = [];
 
     return Scaffold(
       appBar: AppBar(
         title: Text('QR Code Scanner'),
       ),
       // body: Text(_qrCodeData),
-      body: Container(
-          // color: Colors.amber,
-          child: Center(
-        child: _getMainLayout(),
-      )),
+      body: _getScaffoldBody(),
       floatingActionButton: Visibility(
         visible: !_isCameraOn,
         child: FloatingActionButton(
@@ -68,20 +65,24 @@ class _QrScannerState extends State<QrScannerStatefulWidget> {
     );
   }
 
-  _clearScannedData() {
-    _qrCodeData = null;
-  }
+  Widget _getScaffoldBody() {
 
-  Widget _getMainLayout() {
+    _mainColumnWidgets = [];
+
     if (_isCameraOn) {
       _setActiveCameraView();
     } else {
       _setCameraOffView();
     }
 
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: _mainColumnWidgets,
+    return Container(
+      // color: Colors.amber,
+      child: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: _mainColumnWidgets,
+        ),
+      ),
     );
   }
 
@@ -142,23 +143,3 @@ class _QrScannerState extends State<QrScannerStatefulWidget> {
     _mainColumnWidgets.add(cameraWidget);
   }
 }
-
-/*
-
-  Future<String> callServer1() async {
-    // String localhost = "69.181.92.143";
-    String localhost = "10.0.2.2";
-
-    final response = await http.get('http://$localhost:8000/ping');
-
-    if (response.statusCode == 200) {
-      // If the server did return a 200 OK response,
-      // then parse the JSON.
-      log.i('response.body: ${response.body}');
-    } else {
-      // If the server did not return a 200 OK response,
-      // then throw an exception.
-      throw Exception('Failed to load end point');
-    }
-  }
- */

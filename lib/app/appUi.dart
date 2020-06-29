@@ -27,7 +27,7 @@ class AppUi {
     return getGradientScreenContainer(
         context, gradientStart, gradientEnd, mainLayoutContainerWidget);
   }
-  
+
   static Container getGreenGradientScreenContainer(
       BuildContext context, Widget mainLayoutContainerWidget) {
     Color gradientStart = Colors.lightGreen[800];
@@ -58,5 +58,19 @@ class AppUi {
     );
 
     return mainContainer;
+  }
+}
+
+class CountDownAnimatedWidget extends AnimatedWidget {
+  CountDownAnimatedWidget({Key key, this.animation})
+      : super(key: key, listenable: animation);
+  Animation<int> animation;
+
+  @override
+  build(BuildContext context) {
+    return new Text(
+      animation.value.toString(),
+      style: new TextStyle(fontSize: 150.0),
+    );
   }
 }

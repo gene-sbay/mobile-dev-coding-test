@@ -76,7 +76,7 @@ class _ExpiringQrCodeState extends State<ExpiringQrCodeStatefulWidget> {
 
     return streamBuilder;
   }
-  
+
   @override
   void dispose() {
     _qrSeedBloc.dispose();

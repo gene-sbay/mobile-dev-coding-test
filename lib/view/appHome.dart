@@ -64,7 +64,7 @@ class _AppHomeState extends State<AppHomeStatefulWidget> {
             RaisedButton(
               color: Colors.white,
               child: Text(
-                'Expiring Qr Code',
+                'Expiring QR Code',
                 style: TextStyle(color: Colors.black, fontSize: 25),
               ),
               onPressed: () {

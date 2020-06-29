@@ -20,13 +20,13 @@ class ExpiringQrCodeStatefulWidget extends StatefulWidget {
 class _ExpiringQrCodeState extends State<ExpiringQrCodeStatefulWidget> {
 
   Logger log = getLogger("ExpiringQrCodeScreen");
-
-  QrSeedBloc _bloc;
+  
+  QrSeedBloc _qrSeedBloc;
 
   @override
   void initState() {
     super.initState();
-    _bloc = QrSeedBloc();
+    _qrSeedBloc = QrSeedBloc();
   }
 
   @override
@@ -39,7 +39,7 @@ class _ExpiringQrCodeState extends State<ExpiringQrCodeStatefulWidget> {
         backgroundColor: Color(0xFF333333),
       ),
       body: RefreshIndicator(
-        onRefresh: () => _bloc.fetchNextSeed(),
+        onRefresh: () => _qrSeedBloc.fetchNextSeed(),
         child: _getScreenStreamBuilder(),
       ),
     );
@@ -47,7 +47,7 @@ class _ExpiringQrCodeState extends State<ExpiringQrCodeStatefulWidget> {
 
   StreamBuilder _getScreenStreamBuilder() {
     return StreamBuilder<ApiResponse<QrSeed>>(
-      stream: _bloc.qrSeedDataStream,
+      stream: _qrSeedBloc.qrSeedDataStream,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           switch (snapshot.data.status) {
@@ -60,7 +60,7 @@ class _ExpiringQrCodeState extends State<ExpiringQrCodeStatefulWidget> {
             case Status.ERROR:
               return Error(
                 errorMessage: snapshot.data.message,
-                onRetryPressed: () => _bloc.fetchNextSeed(),
+                onRetryPressed: () => _qrSeedBloc.fetchNextSeed(),
               );
               break;
           }
@@ -72,7 +72,7 @@ class _ExpiringQrCodeState extends State<ExpiringQrCodeStatefulWidget> {
 
   @override
   void dispose() {
-    _bloc.dispose();
+    _qrSeedBloc.dispose();
     super.dispose();
   }
 }

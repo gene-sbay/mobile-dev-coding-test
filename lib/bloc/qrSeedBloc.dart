@@ -24,18 +24,14 @@ class QrSeedBloc {
   fetchNextSeed() async {
 
     print ('enter fetchNextSeed()');
-    int delayMillis = 3500;
-    await new Future.delayed(Duration(milliseconds: delayMillis));
 
-    // qrSeedListSink.add(ApiApiResponse.loading('Getting Chuck Categories.'));
     try {
-      QrSeed nextSeed = await _qrSeedRepository.fetchNextSeedData();
-      print('nextSeed: $nextSeed');
+      QrSeed nextQrSeed = await _qrSeedRepository.fetchNextSeedData();
+      print('nextQrSeed: $nextQrSeed');
 
-      // FIXME - do something now
-      // qrSeedListSink.add(ApiApiResponse.completed(randomSeed));
+      qrSeedDataSink.add(ApiResponse.completed(nextQrSeed));
     } catch (e) {
-      // qrSeedListSink.add(ApiApiResponse.error(e.toString()));
+      qrSeedDataSink.add(ApiResponse.error(e.toString()));
       print(e);
     }
   }

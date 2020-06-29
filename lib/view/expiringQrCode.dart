@@ -18,9 +18,8 @@ class ExpiringQrCodeStatefulWidget extends StatefulWidget {
 }
 
 class _ExpiringQrCodeState extends State<ExpiringQrCodeStatefulWidget> {
-
   Logger log = getLogger("ExpiringQrCodeScreen");
-  
+
   QrSeedBloc _qrSeedBloc;
 
   @override
@@ -31,24 +30,22 @@ class _ExpiringQrCodeState extends State<ExpiringQrCodeStatefulWidget> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
-        title: Text('ExpiringQrCode',
-            style: TextStyle(color: Colors.white, fontSize: 20)),
-        backgroundColor: Color(0xFF333333),
+        title: Text('Expiring QR Code'),
       ),
-      body: RefreshIndicator(
-        onRefresh: () => _qrSeedBloc.fetchNextSeed(),
-        child: _getScreenStreamBuilder(),
-      ),
+      body: _getScreenStreamBuilder(),
     );
   }
 
-  StreamBuilder _getScreenStreamBuilder() {
-    return StreamBuilder<ApiResponse<QrSeed>>(
+  Widget _getScreenStreamBuilder() {
+    StreamBuilder<ApiResponse<QrSeed>> streamBuilder =
+        StreamBuilder<ApiResponse<QrSeed>>(
       stream: _qrSeedBloc.qrSeedDataStream,
       builder: (context, snapshot) {
+
         if (snapshot.hasData) {
           switch (snapshot.data.status) {
             case Status.LOADING:
@@ -65,11 +62,21 @@ class _ExpiringQrCodeState extends State<ExpiringQrCodeStatefulWidget> {
               break;
           }
         }
-        return Container();
+        return Container(
+            child: Center(
+                child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+              Text('Standing by for data', style: TextStyle(fontSize: 25))
+            ])));
       },
     );
-  }
 
+    return streamBuilder;
+  }
+  
   @override
   void dispose() {
     _qrSeedBloc.dispose();

@@ -1,9 +1,15 @@
 ## Project Development Notes 
 
+# Design Patterns
+
+1. **BLoC** : For accessing the server.js endpoint 
+2. **Navigation Pattern**: Using routes.  See `lib/app/appRoutes.dart`
+
 # Roadmap
 1. Implement basic functionality for main features
-2. Refactor to use MVVM/BLOC design pattern, using Flutter Streams
-    
+2. Refactor to use MVVM/BLoC design pattern, using Flutter Streams
+3. Fill in Test Automation for delivered code
+     
 # Implement basic functionality for main features
 
 Flutter Client

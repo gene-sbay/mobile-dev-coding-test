@@ -3,7 +3,9 @@ const app = express();
 
 
 app.get('/ping', function(req, res) {
-  res.send('pong');
+  var rand = Math.floor(Math.random() * 100) + 1;
+
+  res.send('pong, random#: ' + rand);
 });
 
 app.post('/upload', function(req, res) {

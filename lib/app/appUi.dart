@@ -74,3 +74,22 @@ class CountDownAnimatedWidget extends AnimatedWidget {
     );
   }
 }
+
+
+/*
+
+  Container _getGradient(BuildContext context) {
+    return new Container(
+      margin: new EdgeInsets.only(top: 90.0),
+      height: MediaQuery.of(context).size.height,
+      decoration: new BoxDecoration(
+        gradient: new LinearGradient(
+          colors: <Color>[new Color(0x00736AB7), new Color(0xFF333333)],
+          stops: [0.0, 0.9],
+          begin: const FractionalOffset(0.0, 0.0),
+          end: const FractionalOffset(0.0, 1.0),
+        ),
+      ),
+    );
+  }
+ */

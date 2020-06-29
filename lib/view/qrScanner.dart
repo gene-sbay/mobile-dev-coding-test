@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:qr_mobile_vision/qr_camera.dart';
-import 'package:qr_flutter/qr_flutter.dart';
+import 'package:logger/logger.dart';
+import 'package:qr_code_demo/app/logger.dart';
 
 void main() => runApp(QrScannerScreen());
 
@@ -27,12 +28,14 @@ class _QrScannerState extends State<QrScannerStatefulWidget> {
   String _qrInfo = 'Scan a Code';
   bool _camState = false;
 
+  Logger log = getLogger("QrScannerScreen");
+
   _qrCallback(String code) {
     setState(() {
       _camState = false;
       _qrInfo = code;
 
-      print('_qrInfo: $_qrInfo');
+      log.i('_qrInfo: $_qrInfo');
     });
   }
 
@@ -51,7 +54,7 @@ class _QrScannerState extends State<QrScannerStatefulWidget> {
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,
       // then parse the JSON.
-      print('response.body: ${response.body}');
+      log.i('response.body: ${response.body}');
     } else {
       // If the server did not return a 200 OK response,
       // then throw an exception.

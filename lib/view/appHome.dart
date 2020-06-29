@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import 'package:qr_code_demo/app/appRoutes.dart';
+import 'package:qr_code_demo/app/logger.dart';
 
 class AppHomeScreen extends StatelessWidget {
   static String route = 'AppHome';
@@ -16,6 +18,9 @@ class AppHomeStatefulWidget extends StatefulWidget {
 }
 
 class _AppHomeState extends State<AppHomeStatefulWidget> {
+
+  Logger log = getLogger("AppHomeScreen");
+
   @override
   void initState() {
     super.initState();
@@ -40,7 +45,7 @@ class _AppHomeState extends State<AppHomeStatefulWidget> {
           children: [
             FloatingActionButton(
               onPressed: () {
-                print('pressed Scan');
+                log.i('pressed Scan');
                 Navigator.pushNamed(context, AppRoutes.QrScanner);
               },
               tooltip: 'Scan',
@@ -56,7 +61,7 @@ class _AppHomeState extends State<AppHomeStatefulWidget> {
                 style: TextStyle(color: Colors.black, fontSize: 25),
               ),
               onPressed: () {
-                print('pressed Expiring Qr Code');
+                log.i('pressed Expiring Qr Code');
                 Navigator.pushNamed(context, AppRoutes.ExpiringQrCode);
               },
             ),

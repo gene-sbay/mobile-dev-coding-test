@@ -1,4 +1,4 @@
-import 'package:qr_code_demo/view/qrAppHome.dart';
+import 'package:qr_code_demo/view/appHome.dart';
 import 'package:qr_code_demo/view/qrScanner.dart';
 import 'package:qr_code_demo/view/expiringQrCode.dart';
 
@@ -16,8 +16,8 @@ class AppRoutes {
     
     return {
       AppRoutes.AppHome: (context) => AppHomeScreen(),
+      AppRoutes.QrScanner: (context) => QrScannerScreen(),
       AppRoutes.ExpiringQrCode: (context) => ExpiringQrCodeScreen(),
-      AppRoutes.QrScanner: (context) => QrScannerScreen()
     };
     
   }

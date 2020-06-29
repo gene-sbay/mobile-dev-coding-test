@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
+import 'package:qr_code_demo/app/logger.dart';
 import 'package:qr_code_demo/bloc/qrSeedBloc.dart';
 import 'package:qr_code_demo/model/qrSeed.dart';
 import 'package:qr_code_demo/network/apiResponse.dart';
@@ -16,6 +18,9 @@ class ExpiringQrCodeStatefulWidget extends StatefulWidget {
 }
 
 class _ExpiringQrCodeState extends State<ExpiringQrCodeStatefulWidget> {
+
+  Logger log = getLogger("ExpiringQrCodeScreen");
+
   QrSeedBloc _bloc;
 
   @override

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:qr_code_demo/app/appRoutes.dart';
+import 'package:qr_code_demo/app/appUi.dart';
 import 'package:qr_code_demo/app/logger.dart';
 
 class AppHomeScreen extends StatelessWidget {
@@ -18,7 +19,6 @@ class AppHomeStatefulWidget extends StatefulWidget {
 }
 
 class _AppHomeState extends State<AppHomeStatefulWidget> {
-
   Logger log = getLogger("AppHomeScreen");
 
   @override
@@ -28,11 +28,18 @@ class _AppHomeState extends State<AppHomeStatefulWidget> {
 
   @override
   Widget build(BuildContext context) {
+    GestureDetector clearFocusGestureDetector =
+        AppUi.getClearFocusGestureDetector(context, [
+      _getMainLayout(),
+    ]);
     return Scaffold(
       appBar: AppBar(
         title: Text('QR Code Demo Start Screen'),
       ),
-      body: _getMainLayout(),
+      body: AppUi.getOrangeSodaGradientScreenContainer(
+        context,
+        clearFocusGestureDetector,
+      ),
     );
   }
 

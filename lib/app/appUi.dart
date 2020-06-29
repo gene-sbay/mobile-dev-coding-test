@@ -1,0 +1,62 @@
+import 'package:flutter/material.dart';
+
+class AppUi {
+  static GestureDetector getClearFocusGestureDetector(
+      BuildContext context, List<Widget> screenWidgets) {
+    Column mainColumn = new Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: screenWidgets);
+
+    // to support touch listener , eg click outside of textfield to lose/take focus
+    GestureDetector clearFocusGestureDetector = new GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        onTap: () {
+          // print('GestureDetector.onTap()');
+          FocusScope.of(context).requestFocus(new FocusNode());
+        },
+        child: mainColumn);
+
+    return clearFocusGestureDetector;
+  }
+
+  static Container getOrangeSodaGradientScreenContainer(
+      BuildContext context, Widget mainLayoutContainerWidget) {
+    Color gradientStart = Colors.orange[500];
+    Color gradientEnd = Colors.orange[100];
+
+    return getGradientScreenContainer(
+        context, gradientStart, gradientEnd, mainLayoutContainerWidget);
+  }
+  
+  static Container getGreenGradientScreenContainer(
+      BuildContext context, Widget mainLayoutContainerWidget) {
+    Color gradientStart = Colors.lightGreen[800];
+    Color gradientEnd = Colors.lightGreen[200];
+
+    return getGradientScreenContainer(
+        context, gradientStart, gradientEnd, mainLayoutContainerWidget);
+  }
+
+  static Container getGradientScreenContainer(
+      BuildContext context,
+      Color gradientStart,
+      Color gradientEnd,
+      Widget mainLayoutContainerWidget) {
+    // Holds main setup like background color, etc
+    Container mainContainer = Container(
+      padding: const EdgeInsets.only(top: 30, left: 10),
+      // top is to dip below the status bar
+      decoration: new BoxDecoration(
+        gradient: new LinearGradient(
+            colors: [gradientStart, gradientEnd],
+            begin: const FractionalOffset(0.5, 0.0),
+            end: const FractionalOffset(0.0, 0.5),
+            stops: [0.0, 1.0],
+            tileMode: TileMode.clamp),
+      ),
+      child: mainLayoutContainerWidget,
+    );
+
+    return mainContainer;
+  }
+}

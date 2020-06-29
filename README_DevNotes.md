@@ -2,15 +2,15 @@
 
 # Design Patterns
 
-- **BLoC** : For accessing the server.js endpoint using a StreamBuilder 
-- **Navigation Pattern**: Using routes.  See `lib/app/appRoutes.dart`
+**BLoC/StreamBuilder** 
+- For accessing the server.js endpoint using a StreamBuilder 
+- Using routes.  See `lib/view/expiringQrCode.dart`
 
-# Flutter Data Components Demonstrated
-
-- StreamBuilder 
+**Navigation Pattern**
+- Using routes.  See `lib/app/appRoutes.dart`
 
 # Flutter UI Components Demonstrated
-
+- StreamBuilder 
 - AnimatedWidget 
 
 # Roadmap

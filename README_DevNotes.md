@@ -2,8 +2,16 @@
 
 # Design Patterns
 
-1. **BLoC** : For accessing the server.js endpoint 
-2. **Navigation Pattern**: Using routes.  See `lib/app/appRoutes.dart`
+- **BLoC** : For accessing the server.js endpoint using a StreamBuilder 
+- **Navigation Pattern**: Using routes.  See `lib/app/appRoutes.dart`
+
+# Flutter Data Components Demonstrated
+
+- StreamBuilder 
+
+# Flutter UI Components Demonstrated
+
+- AnimatedWidget 
 
 # Roadmap
 1. Implement basic functionality for main features

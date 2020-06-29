@@ -4,6 +4,9 @@ import 'package:qr_code_demo/model/qrSeed.dart';
 import 'package:qr_code_demo/network/apiResponse.dart';
 import 'package:qr_code_demo/repository/qrSeedRepository.dart';
 
+/*
+ * Purpose: facilitate BLoC design-pattern/architecture
+ */
 class QrSeedBloc {
   QrSeedRepository _qrSeedRepository;
 
@@ -40,9 +43,3 @@ class QrSeedBloc {
     _qrSeedDataController?.close();
   }
 }
-
-// StreamController _randomSeedListController;
-//  StreamSink<ApiApiResponse<RandomSeed>> get qrSeedListSink =>
-//      _randomSeedListController.sink;
-//  Stream<ApiApiResponse<RandomSeed>> get qrSeedListStream =>
-//      _randomSeedListController.stream;

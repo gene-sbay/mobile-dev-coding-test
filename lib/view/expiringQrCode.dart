@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
+import 'package:qr_code_demo/app/appConfig.dart';
+import 'package:qr_code_demo/app/appUi.dart';
 import 'package:qr_code_demo/app/logger.dart';
 import 'package:qr_code_demo/bloc/qrSeedBloc.dart';
 import 'package:qr_code_demo/model/qrSeed.dart';
 import 'package:qr_code_demo/network/apiResponse.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 class ExpiringQrCodeScreen extends StatelessWidget {
   @override
@@ -17,20 +20,36 @@ class ExpiringQrCodeStatefulWidget extends StatefulWidget {
   _ExpiringQrCodeState createState() => _ExpiringQrCodeState();
 }
 
-class _ExpiringQrCodeState extends State<ExpiringQrCodeStatefulWidget> {
+class _ExpiringQrCodeState extends State<ExpiringQrCodeStatefulWidget>
+    with TickerProviderStateMixin {
+  AnimationController _animationController;
+
   Logger log = getLogger("ExpiringQrCodeScreen");
 
+  QrSeed _qrSeed;
   QrSeedBloc _qrSeedBloc;
+
+  static const int kStartValue = AppConfig.QrTimeoutSeconds;
 
   @override
   void initState() {
     super.initState();
     _qrSeedBloc = QrSeedBloc();
+
+    _animationController = new AnimationController(
+      vsync: this,
+      duration: new Duration(seconds: kStartValue),
+    );
+
+    _animationController.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        _fetchNextSeed();
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
@@ -45,19 +64,20 @@ class _ExpiringQrCodeState extends State<ExpiringQrCodeStatefulWidget> {
         StreamBuilder<ApiResponse<QrSeed>>(
       stream: _qrSeedBloc.qrSeedDataStream,
       builder: (context, snapshot) {
-
         if (snapshot.hasData) {
           switch (snapshot.data.status) {
             case Status.LOADING:
               return Loading(loadingMessage: snapshot.data.message);
               break;
             case Status.COMPLETED:
-              return QrSeedDisplay(qrSeed: snapshot.data.data);
+              _qrSeed = snapshot.data.data;
+
+              return getSeedDisplayContainer();
               break;
             case Status.ERROR:
               return Error(
                 errorMessage: snapshot.data.message,
-                onRetryPressed: () => _qrSeedBloc.fetchNextSeed(),
+                onRetryPressed: () => _fetchNextSeed(),
               );
               break;
           }
@@ -77,84 +97,81 @@ class _ExpiringQrCodeState extends State<ExpiringQrCodeStatefulWidget> {
     return streamBuilder;
   }
 
-  @override
-  void dispose() {
-    _qrSeedBloc.dispose();
-    super.dispose();
-  }
-}
-
-class QrSeedDisplay extends StatelessWidget {
-  final QrSeed qrSeed;
-
-  const QrSeedDisplay({Key key, this.qrSeed}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return new Scaffold(
-      body: new Container(
-        constraints: new BoxConstraints.expand(),
-        color: new Color(0xFF736AB7),
-        child: new Stack(
-          children: <Widget>[
-            // _getBackground(),
-            _getGradient(context),
-            _getContent(),
-          ],
-        ),
-      ),
-    );
+  _fetchNextSeed() {
+    _qrSeedBloc.fetchNextSeed();
+    _animationController.forward(from: 0.0);
   }
 
-  Container _getGradient(BuildContext context) {
-    return new Container(
-      margin: new EdgeInsets.only(top: 90.0),
-      height: MediaQuery.of(context).size.height,
-      decoration: new BoxDecoration(
-        gradient: new LinearGradient(
-          colors: <Color>[new Color(0x00736AB7), new Color(0xFF333333)],
-          stops: [0.0, 0.9],
-          begin: const FractionalOffset(0.0, 0.0),
-          end: const FractionalOffset(0.0, 1.0),
-        ),
+  Container getSeedDisplayContainer() {
+    return Container(
+      constraints: new BoxConstraints.expand(),
+      // color: new Color(0xFF736AB7),
+      child: new Stack(
+        children: <Widget>[
+          // _getBackground(),
+          // _getGradient(context),
+          _getContent(),
+        ],
       ),
     );
   }
 
   Widget _getContent() {
-    String qrSeedValue = '${qrSeed.seed}';
+    String qrSeedValue = 'Seed Value: ${_qrSeed.seed}';
 
-    return new ListView(
-      padding: new EdgeInsets.fromLTRB(0.0, 280, 0.0, 32.0),
-      children: <Widget>[
-        new Container(
-          margin: EdgeInsets.all(70.0),
-          decoration: BoxDecoration(
-              color: Color(0xFFFFFFFF),
-              shape: BoxShape.rectangle,
-              borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(25.0),
-                  bottomRight: Radius.circular(25.0))),
-          padding: new EdgeInsets.symmetric(horizontal: 32.0),
-          child: new Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              new Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Text(
-                  qrSeedValue,
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
-                      fontFamily: 'Roboto'),
-                ),
-              ),
-            ],
-          ),
+    Widget mainCol = Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(qrSeedValue, style: TextStyle(fontSize: 25)),
+        QrImage(
+          data: qrSeedValue,
+          version: QrVersions.auto,
+          size: 200.0,
         ),
+        CountDownAnimatedWidget(
+          animation: new StepTween(
+            begin: kStartValue,
+            end: 0,
+          ).animate(_animationController),
+        ),
+        _getTimerToggleButton()
       ],
     );
+
+    return Center(
+      child: mainCol
+    );
+  }
+
+  Widget _getTimerToggleButton() {
+    String toggleTimerText =
+        (_animationController.isAnimating) ? "Stop Timer" : "Resume Timer";
+
+    return RaisedButton(
+      color: Colors.white,
+      child: Text(
+        toggleTimerText,
+        style: TextStyle(color: Colors.black, fontSize: 25),
+      ),
+      onPressed: () {
+        log.i('pressed toggleTimer');
+        if (_animationController.isAnimating) {
+          _animationController.stop();
+          setState(() {});
+        } else {
+          // start timer
+          _animationController.forward();
+          setState(() {});
+        }
+      },
+    );
+  }
+
+  @override
+  void dispose() {
+    _qrSeedBloc.dispose();
+    super.dispose();
   }
 }
 

@@ -27,6 +27,7 @@ dependencies:
   fluttertoast: ^4.0.1
   http: ^0.12.1
 
+  mockito: ^4.1.1
 
 dev_dependencies:
   flutter_test:

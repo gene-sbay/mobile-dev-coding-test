@@ -1,30 +1,55 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility that Flutter provides. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
 
-import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
+    import 'package:flutter/material.dart';
+    import 'package:flutter_test/flutter_test.dart';
+    import 'package:mockito/mockito.dart';
+    import 'package:qr_code_demo/app/appRoutes.dart';
+    import 'package:qr_code_demo/view/appHome.dart';
+    import 'package:qr_code_demo/view/qrScanner.dart';
 
-import 'package:qr_code_demo/main.dart';
+    class MockNavigatorObserver extends Mock implements NavigatorObserver {}
 
-void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(AppStart());
+    void main() {
+      group('MainPage navigation tests', () {
+        NavigatorObserver mockObserver;
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+        _loadAppHomeScreen(WidgetTester tester) async {
+          await tester.pumpWidget(
+            MaterialApp(
+              routes: AppRoutes.getRouteMap(),
+              home: AppHomeScreen(),
+              navigatorObservers: [mockObserver],
+            ),
+          );
+        }
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+        setUp(() {
+          mockObserver = MockNavigatorObserver();
+        });
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
-  });
-}
+        Future<Null> _verifyLayoutElements(WidgetTester tester) async {
+          print('_verifyLayoutElements');
+          expect(find.byIcon(Icons.scanner), findsOneWidget);
+          expect(find.byType(FloatingActionButton), findsOneWidget);
+          expect(find.byType(RaisedButton), findsOneWidget);
+        }
+
+        Future<Null> _navigateToQrScannerScreen(WidgetTester tester) async {
+          print('_navigateToQrScannerScreen');
+
+          await tester.tap(find.byIcon(Icons.scanner));
+          await tester.pumpAndSettle();
+
+          verify(mockObserver.didPush(any, any));
+
+          expect(find.byType(AppHomeScreen), findsNothing);
+          expect(find.byType(QrScannerScreen), findsOneWidget);
+        }
+
+        testWidgets('AppHomeScreen WidgetTester', (WidgetTester tester) async {
+          await _loadAppHomeScreen(tester);
+
+          await _verifyLayoutElements(tester);
+          await _navigateToQrScannerScreen(tester);
+        });
+      });
+    }

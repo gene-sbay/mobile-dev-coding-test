@@ -1,17 +1,23 @@
 const express = require('express');
 const app = express();
 
+const SEED_MAX_LEN = 25;
 
-app.get('/ping', function(req, res) {
-  var rand = Math.floor(Math.random() * 100) + 1;
-
-  res.send('pong, random#: ' + rand);
-});
+function getRandomSeed(length) {
+   var result           = '';
+   var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+   var charactersLength = characters.length;
+   for ( var i = 0; i < length; i++ ) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+   }
+   return result;
+}
 
 app.get('/nextSeed', function(req, res) {
-  var rand = Math.floor(Math.random() * 100) + 1;
+  var seedLen = Math.floor(Math.random() * SEED_MAX_LEN) + 1;
 
-  res.send({'seed': rand});
+  var seed = getRandomSeed(seedLen);
+  res.send({'seed': seed});
 });
 
 app.listen(8000, function() {

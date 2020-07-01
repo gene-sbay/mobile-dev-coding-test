@@ -1,5 +1,5 @@
 class QrSeed {
-  final int seed;
+  final String seed;
 
   QrSeed({this.seed});
 

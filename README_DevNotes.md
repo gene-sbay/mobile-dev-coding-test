@@ -44,9 +44,15 @@ To run the server, you will need to have a local development environment set up 
 # Test Automation
 
 Implemented `class TestNavUtil`
- 
- Benefits are
- - Reusable code across test files
- - Allows to better distill actual *business-logic* test code 
+- See `lib/util/testNavUtil.dart`
+- Used by `test/app_home_screen_widget_tests.dart`
+
+Benefits are
+ - Allows to better distill actual *business-logic* testing into clean concise test code
+  
+ - Reusable code across test files, this includes:
+ * pop navigation
+ * loading a screen with `WidgetTester`
+ * encapsulation for `MockNavigatorObserver` 
 
 

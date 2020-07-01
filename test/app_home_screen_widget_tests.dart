@@ -3,10 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:qr_code_demo/util/testNavUtil.dart';
-import 'package:qr_code_demo/app/appRoutes.dart';
 import 'package:qr_code_demo/view/appHome.dart';
-import 'package:qr_code_demo/view/qrScanner.dart';
 import 'package:qr_code_demo/view/expiringQrCode.dart';
+import 'package:qr_code_demo/view/qrScanner.dart';
 
 void main() {
   TestNavUtil _navUtil = TestNavUtil();

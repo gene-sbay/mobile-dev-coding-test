@@ -39,3 +39,14 @@ To run the server, you will need to have a local development environment set up 
 3. Run the following commands:
  - `npm install`
  - `node server.js`
+
+
+# Test Automation
+
+Implemented `class TestNavUtil`
+ 
+ Benefits are
+ - Reusable code across test files
+ - Allows to better distill actual *business-logic* test code 
+
+

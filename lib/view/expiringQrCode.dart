@@ -117,15 +117,15 @@ class _ExpiringQrCodeState extends State<ExpiringQrCodeStatefulWidget>
   }
 
   Widget _getContent() {
-    String qrSeedValue = 'Seed Value: ${_qrSeed.seed}';
+    String seedDisplayText = 'Seed Value: ${_qrSeed.seed}';
 
     Widget mainCol = Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text(qrSeedValue, style: TextStyle(fontSize: 25)),
+        Text(seedDisplayText, style: TextStyle(fontSize: 25)),
         QrImage(
-          data: qrSeedValue,
+          data: _qrSeed.seed,
           version: QrVersions.auto,
           size: 200.0,
         ),
